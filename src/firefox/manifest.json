@@ -1,0 +1,25 @@
+{
+  "name": "netbeep",
+  "version": "1.0.0",
+  "description": "Plays sound on network requests.",
+  "content_scripts": [
+    {
+      "js": ["js/content.js"],
+      "matches" : ["https://www.youtube.com/*"],
+      "run_at" : "document_end"
+    }
+  ],
+  "background": {
+    "scripts": ["js/service-worker.js"]
+  },
+  "permissions": [
+    "https://www.youtube.com/*",
+    "https://random-video.loc/*",
+    "https://random-video.com/*",
+    "webRequest"
+  ],
+  "icons" : {
+    "256" : "img/icon-256.png"
+  },
+  "manifest_version": 2
+}
