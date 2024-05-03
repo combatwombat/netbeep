@@ -8,8 +8,8 @@ if (typeof browser === 'undefined') {
 let defaultSettings = {
     isEnabled: true,
     requestsSameOrigin: true,
-    requestsCrossOrigin: false,
-    requestsTrackers: false,
+    requestsCrossOrigin: true,
+    requestsTrackers: true,
     requestsMalware: true,
     volume: 0.6
 };
