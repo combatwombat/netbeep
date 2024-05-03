@@ -70,6 +70,14 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
     });
 });
 
+// on tab reload, send netbeepTabReloaded message
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+if (changeInfo.status === 'complete') {
+        chrome.runtime.sendMessage({ "netbeepTabReloaded": tab });
+    }
+});
+
+
 
 // change icon on sound. todo: monkey with drums, or something else
 /*

@@ -3,7 +3,7 @@ const init = async () => {
 
     // queue of requests sent from service-worker.js
     let requestQueue = [];
-    let minNoteInterval = 40; // play a note at most every x ms
+    let minNoteInterval = 45; // play a note at most every x ms
 
     async function getSettings() {
         return await new Promise(resolve => {
@@ -443,6 +443,10 @@ const init = async () => {
         }
 
         if ('netbeepTabChanged' in msg) {
+            requestQueue = [];
+        }
+
+        if ('netbeepTabReloaded' in msg) {
             requestQueue = [];
         }
     });
