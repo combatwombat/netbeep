@@ -74,6 +74,10 @@ const init = async () => {
         return false;
     }
 
+    let masterGain = new Tone.Gain(0.8).toDestination();
+    let distortion = new Tone.Distortion(0.8).connect(masterGain);
+    let reverb = new Tone.Reverb(2).connect(masterGain);
+
 
     // nice sound 🟢
     let synth1 = (function () {
@@ -87,7 +91,7 @@ const init = async () => {
                 sustain: 0.05,
                 release: 0.1
             }
-        }).toDestination();
+        }).connect(masterGain);
 
         return {
             play: function (pitch, release, volume) {
@@ -139,13 +143,7 @@ const init = async () => {
                     sustain: 1,
                     release: 0.5
                 }
-            }).toDestination();
-
-            let distortion = new Tone.Distortion(0.8).toDestination();
-            synth.connect(distortion);
-
-            let reverb = new Tone.Reverb(2).toDestination();
-            synth.connect(reverb);
+            }).connect(distortion).connect(reverb);
 
             synthPool.push(synth);
         }
@@ -189,10 +187,7 @@ const init = async () => {
                 modulationIndex: 32,
                 resonance: 1000,
                 octaves: 1.5
-            }).toDestination();
-
-            let reverb = new Tone.Reverb(2).toDestination();
-            synth.connect(reverb);
+            }).connect(reverb);
 
             synthPool.push(synth);
         }
@@ -246,14 +241,7 @@ const init = async () => {
                     sustain: 1,
                     release: 0.1
                 }
-            }).toDestination();
-
-
-            let distortion = new Tone.Distortion(0.8).toDestination();
-            synth.connect(distortion);
-
-            let reverb = new Tone.Reverb(2).toDestination();
-            synth.connect(reverb);
+            }).connect(distortion).connect(reverb);
 
 
             synthPool.push(synth);
