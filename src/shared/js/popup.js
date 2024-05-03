@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let ui = {};
 
     ui.body = document.querySelector('body');
-
+    
     // isEnabled checkbox
     ui.isEnabled = {};
     ui.isEnabled.el = document.querySelector('[data-state="isEnabled"]');
