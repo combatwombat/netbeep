@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "netbeep",
-  "version": "0.1",
+  "version": "0.2",
   "description": "Plays sound on network requests.",
   "minimum_chrome_version": "109",
   "background": {

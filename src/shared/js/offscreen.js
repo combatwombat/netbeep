@@ -77,6 +77,7 @@ const init = async () => {
     let masterGain = new Tone.Gain(0.8).toDestination();
     let distortion = new Tone.Distortion(0.8).connect(masterGain);
     let reverb = new Tone.Reverb(2).connect(masterGain);
+    let reverb2 = new Tone.Reverb(1).connect(masterGain);
 
 
     // nice sound 🟢
@@ -117,7 +118,7 @@ const init = async () => {
     let synth2 = (function() {
 
         // rotate through a pool of synths for some polyphony
-        let synthPoolSize = 3; // not too high, otherwise web audio api gets overwhelmed
+        let synthPoolSize = 2; // not too high, otherwise web audio api gets overwhelmed
         let synthPool = [];
         let synthPoolIndex = 0;
         for (let i = 0; i < synthPoolSize; i++) {
@@ -171,7 +172,7 @@ const init = async () => {
     let synth3 = (function() {
 
         // rotate through a pool of synths for some polyphony
-        let synthPoolSize = 3;
+        let synthPoolSize = 2;
         let synthPool = [];
         let synthPoolIndex = 0;
         for (let i = 0; i < synthPoolSize; i++) {
@@ -187,7 +188,7 @@ const init = async () => {
                 modulationIndex: 32,
                 resonance: 1000,
                 octaves: 1.5
-            }).connect(reverb);
+            }).connect(reverb2);
 
             synthPool.push(synth);
         }
@@ -215,7 +216,7 @@ const init = async () => {
     let synth4 = (function() {
 
         // rotate through a pool of synths for some polyphony
-        let synthPoolSize = 3;
+        let synthPoolSize = 2;
         let synthPool = [];
         let synthPoolIndex = 0;
         for (let i = 0; i < synthPoolSize; i++) {
