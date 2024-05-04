@@ -11,6 +11,7 @@ const init = async () => {
         });
     }
 
+
     // get settings from service-worker via netbeepGetSettings event
     let settings = await getSettings();
 
@@ -287,8 +288,6 @@ const init = async () => {
 
         // normalize contentLength from 0 to 1. 0 = 0kb, 1 = 100kb and above
         let normalizedContentLength = Math.min(1, Math.max(0, request.contentLength / 100000));
-        
-        console.log("settings: ", settings);
 
         let sameOrigin = settings.requestsSameOrigin && request.domain === request.tabDomain;
         let crossOrigin = settings.requestsCrossOrigin && !sameOrigin;

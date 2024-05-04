@@ -42,72 +42,6 @@ function saveSettings() {
     });
 }
 
-chrome.runtime.onStartup.addListener(() => {
-    refreshSettings();
-});
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.hasOwnProperty('netbeepSettingsChanged')) {
-        refreshSettings();
-    }
-});
-
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.hasOwnProperty('netbeepGetDefaultSettings')) {
-        sendResponse(defaultSettings);
-    }
-    if (message.hasOwnProperty('netbeepGetSettings')) {
-        refreshSettings();
-        sendResponse(settings);
-    }
-});
-
-// on tab change, send netbeepTabChanged message
-chrome.tabs.onActivated.addListener((activeInfo) => {
-    chrome.tabs.get(activeInfo.tabId, (tab) => {
-        chrome.runtime.sendMessage({ "netbeepTabChanged": tab });
-    });
-});
-
-// on tab reload, send netbeepTabReloaded message
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-if (changeInfo.status === 'complete') {
-        chrome.runtime.sendMessage({ "netbeepTabReloaded": tab });
-    }
-});
-
-
-
-// change icon on sound. todo: monkey with drums, or something else
-/*
-let c = 0;
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.hasOwnProperty('netbeepSoundPlayed')) {
-
-        console.log("sound playing ", message.netbeepSoundPlayed.type);
-
-        setIcon(c % 2 === 0);
-        c++;
-
-    }
-});
-const setIcon = (enabled) => {
-    const iconPath = enabled ? '../img/icon-enabled-128.png' : '../img/icon-disabled-128.png';
-    chrome.action.setIcon({path: {"128": iconPath}});
-}*/
-
-
-
-
-chrome.runtime.onInstalled.addListener(function(details) {
-    if (details.reason === "install") {
-        chrome.storage.local.set(defaultSettings, function() {
-            console.log('extension installed, setting default settings.');
-        });
-    }
-});
-
 // check if offscreen document for audio playback exists, if not, create it
 // because we can only play sound with DOM access and offscreen documents with
 // reason AUDIO_PLAYBACK get killed after 30 seconds of not playing audio
@@ -139,7 +73,12 @@ async function createOffscreenDocument(path = 'offscreen.html') {
 // add request to play-queue in offscreen.js
 async function addRequest(request) {
     await createOffscreenDocument();
-    await chrome.runtime.sendMessage({ "netbeepAddRequest": request });
+
+    // prevent "Error: Could not establish connection. Receiving end does not exist." error from occuring.
+    // This error occurs when the offscreen document is not ready yet.
+    await chrome.runtime.sendMessage({ "netbeepAddRequest": request }).catch(error => { console.error("failed to send netbeepAddRequest message: ", error); });
+
+
 }
 
 
@@ -214,6 +153,74 @@ async function onHeadersReceived(details) {
     return { cancel: false };
 }
 
+
+
+
+chrome.runtime.onStartup.addListener(() => {
+    refreshSettings();
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.hasOwnProperty('netbeepSettingsChanged')) {
+        refreshSettings();
+    }
+});
+
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.hasOwnProperty('netbeepGetDefaultSettings')) {
+        sendResponse(defaultSettings);
+    }
+    if (message.hasOwnProperty('netbeepGetSettings')) {
+        refreshSettings();
+        sendResponse(settings);
+    }
+});
+
+// on tab change, send netbeepTabChanged message
+chrome.tabs.onActivated.addListener((activeInfo) => {
+    chrome.tabs.get(activeInfo.tabId, (tab) => {
+        chrome.runtime.sendMessage({ "netbeepTabChanged": tab }).catch(error => { console.error("failed to send netbeepTabChanged message: ", error); });
+    });
+});
+
+// on tab reload, send netbeepTabReloaded message
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+if (changeInfo.status === 'complete') {
+        chrome.runtime.sendMessage({ "netbeepTabReloaded": tab }).catch(error => { console.error("failed ot send netbeepTabReloaded message: ", error); });
+    }
+});
+
+
+
+// change icon on sound. todo: monkey with drums, or something else
+/*
+let c = 0;
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.hasOwnProperty('netbeepSoundPlayed')) {
+
+        console.log("sound playing ", message.netbeepSoundPlayed.type);
+
+        setIcon(c % 2 === 0);
+        c++;
+
+    }
+});
+const setIcon = (enabled) => {
+    const iconPath = enabled ? '../img/icon-enabled-128.png' : '../img/icon-disabled-128.png';
+    chrome.action.setIcon({path: {"128": iconPath}});
+}*/
+
+
+
+
+chrome.runtime.onInstalled.addListener(function(details) {
+    if (details.reason === "install") {
+        chrome.storage.local.set(defaultSettings, function() {
+            console.log('extension installed, setting default settings.');
+        });
+    }
+});
 
 
 
