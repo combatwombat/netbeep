@@ -79,6 +79,7 @@ const init = async () => {
     let distortion = new Tone.Distortion(0.8).connect(masterGain);
     let reverb = new Tone.Reverb(2).connect(masterGain);
     let reverb2 = new Tone.Reverb(1).connect(masterGain);
+    let vibrato = new Tone.Vibrato(8, 1).connect(masterGain);
 
 
     // nice sound 🟢
@@ -180,16 +181,17 @@ const init = async () => {
             let synth = new Tone.MetalSynth({
                 frequency: 200,
                 envelope: {
-                    attack: 0.001,
-                    decay: 1.5,
-                    sustain: 1,
+                    attack: 0,
+                    decay: 0.4,
+                    sustain: 0,
                     release: 0.1
                 },
-                harmonicity: 5.1,
-                modulationIndex: 32,
-                resonance: 1000,
-                octaves: 1.5
-            }).connect(reverb2);
+                harmonicity: 2,
+                modulationIndex: 20,
+                resonance: 10,
+                octaves: 1
+            }).connect(masterGain);//.connect(reverb2);
+
 
             synthPool.push(synth);
         }
@@ -229,7 +231,7 @@ const init = async () => {
                     type: "square"
                 },
                 envelope: {
-                    attack: 0.01,
+                    attack: 0,
                     decay: 0.01,
                     sustain: 1,
                     release: 0.5
@@ -243,7 +245,7 @@ const init = async () => {
                     sustain: 1,
                     release: 0.1
                 }
-            }).connect(distortion).connect(reverb);
+            }).connect(vibrato);
 
 
             synthPool.push(synth);
@@ -331,7 +333,7 @@ const init = async () => {
 
             let release = 0.3 + normalizedContentLength * 0.9;
             let pitch = normalizedContentLength * 100 + 50;
-            let volume = 0.1 + normalizedContentLength * 0.15;
+            let volume = 0.1 + normalizedContentLength * 0.25;
 
             volume = Math.min(1, Math.pow(volume * settings.volume * baseVolumeModifier, 2));
 
@@ -387,8 +389,8 @@ const init = async () => {
         if (type === "trackers") {
             let normalizedContentLength = 0.4 + Math.random()*0.2;
             let release = 0.1 + normalizedContentLength * 0.9;
-            let pitch = normalizedContentLength * 100 + 5;
-            let volume = 0.1 + normalizedContentLength * 0.3;
+            let pitch = normalizedContentLength * 160 + 5;
+            let volume = 0.1 + normalizedContentLength * 0.6;
 
             volume = Math.pow(volume * settings.volume, 2);
 
@@ -399,7 +401,7 @@ const init = async () => {
             let normalizedContentLength = 0.4 + Math.random()*0.2;
             let release = 0.1 + normalizedContentLength * 0.9;
             let pitch = normalizedContentLength * 100 + 400;
-            let volume = 0.2 + normalizedContentLength * 0.5;
+            let volume = 0.2 + normalizedContentLength * 0.6;
 
             volume = Math.pow(volume * settings.volume, 2);
 
@@ -449,6 +451,7 @@ const init = async () => {
             requestQueue = [];
         }
     });
+
 
 
 
