@@ -3,7 +3,7 @@ Chrome extension to play sounds on network requests depending on content type an
 
 [Install it from the Chrome Web Store](https://chromewebstore.google.com/detail/netbeep/hcgpboeddcgldkgimfmcnfloonkccfmi)
 
-https://raw.githubusercontent.com/combatwombat/netbeep/main/video.mp4
+https://github.com/combatwombat/netbeep/blob/b38f70b51a9a2e3cc117bd6c1f53548067fcf628/video.mp4
 
 Thanks to the [blocklist project](https://github.com/blocklistproject/Lists) for the lists of malware and tracking domains.
 
