@@ -1,25 +1,36 @@
 {
+  "manifest_version": 3,
   "name": "netbeep",
-  "version": "1.0.0",
+  "version": "0.3",
   "description": "Plays sound on network requests.",
-  "content_scripts": [
+  "minimum_chrome_version": "109",
+  "background": {
+    "service_worker": "js/service-worker.js",
+    "type": "module"
+  },
+  "web_accessible_resources": [
     {
-      "js": ["js/content.js"],
-      "matches" : ["https://www.youtube.com/*"],
-      "run_at" : "document_end"
+      "resources": ["js/tone.js"],
+      "matches": ["<all_urls>"]
     }
   ],
-  "background": {
-    "scripts": ["js/service-worker.js"]
-  },
   "permissions": [
-    "https://www.youtube.com/*",
-    "https://random-video.loc/*",
-    "https://random-video.com/*",
-    "webRequest"
+    "webRequest",
+    "offscreen",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
   ],
   "icons" : {
-    "256" : "img/icon-256.png"
+    "128" : "img/icon-enabled-128.png"
   },
-  "manifest_version": 2
+  "action": {
+    "default_icon": {
+      "128": "img/icon-enabled-128.png"
+    },
+    "default_title": "netbeep - Play sound on network requests",
+    "default_popup": "popup.html"
+  }
 }

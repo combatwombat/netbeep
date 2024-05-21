@@ -1,10 +1,3 @@
-let browser;
-let isManifestV3 = false;
-if (typeof browser === 'undefined') {
-    isManifestV3 = true;
-    browser = chrome;
-}
-
 let defaultSettings = {
     isEnabled: true,
     requestsSameOrigin: true,
@@ -79,9 +72,8 @@ async function onHeadersReceived(details) {
         return { cancel: false };
     }
 
-
     // get currently selected tab id
-    const tabs = await browser.tabs.query({ active: true, currentWindow: true });
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
 
     // get current tab, if it exists
     if (tabs.length === 0) {
