@@ -25,5 +25,5 @@
     "default_title": "netbeep - Play sound on network requests",
     "default_popup": "popup.html"
   },
-  "content_security_policy": "script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval'; object-src 'self'; worker-src 'self' blob:"
+  "content_security_policy": "script-src 'self'; object-src 'self'; worker-src 'self' blob:"
 }
