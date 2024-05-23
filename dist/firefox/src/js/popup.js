@@ -68,8 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         chrome.runtime.sendMessage({"netbeepPlayDemoSound": type});
     }
 
-
-
+    
     let ui = {};
 
     ui.body = document.querySelector('body');
