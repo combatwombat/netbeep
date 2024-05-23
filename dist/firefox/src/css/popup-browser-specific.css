@@ -9,7 +9,7 @@
             top: -0.5px;
             left: 1px;
             width: calc(var(--value) * 100% +
-            (19px - var(--value) * 21px) /* +18px to the left, -1px to the right */
+            (19px - var(--value) * 21px) /* +19px to the left, -2px to the right */
             );
 
             height: 18px;
