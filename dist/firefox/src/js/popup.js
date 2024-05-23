@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         setIcon(state.isEnabled);
     }
 
-
     const setIcon = (enabled) => {
         const iconPath = enabled ? 'img/icon-enabled-128.png' : 'img/icon-disabled-128.png';
         const iconDetails = { path: { "128": iconPath } };
