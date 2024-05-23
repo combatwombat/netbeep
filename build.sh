@@ -6,6 +6,7 @@ zip -r ../netbeep.zip *
 cd ../../..
 echo "Done"
 
+
 echo "Creating Firefox extension... "
 cp -a src/shared/. dist/firefox/src
 cp -a src/firefox/. dist/firefox/src
