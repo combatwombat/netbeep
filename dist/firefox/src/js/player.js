@@ -69,6 +69,10 @@ let Player = function() {
     let vibrato = new Tone.Vibrato(8, 1).connect(masterGain);
 
 
+
+    //////////////// Synths
+
+
     // nice sound 🟢
     let synth1 = (function () {
         let synth = new Tone.PolySynth({

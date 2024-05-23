@@ -47,7 +47,6 @@ const backgroundInit = async () => {
         settings = { ...defaultSettings, ...savedSettings };
     }
     await saveSettings(settings);
-    chrome.runtime.sendMessage({ "netbeepSettingsChanged": settings });
 
     player = Player();
     player.setSettings(settings);
@@ -89,8 +88,6 @@ const backgroundInit = async () => {
             return { cancel: false };
         }
 
-
-
         // get domain of current tab, remove subdomain part
         let tabDomain = "";
         try {
@@ -126,8 +123,6 @@ const backgroundInit = async () => {
                 }
             }
         });
-
-        console.log("request received: ", detailsDomain);
 
         player.addRequest({
             domain: detailsDomain,

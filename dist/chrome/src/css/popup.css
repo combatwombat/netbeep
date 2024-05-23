@@ -235,11 +235,7 @@ body {
                 height: 20px;
             }
             &::-moz-range-thumb {
-                background-color: var(--color-control);
-                border: none; /*Removes extra border that FF applies*/
-                border-radius: 9px;
-                height: 18px;
-                width: 18px;
+                opacity: 0;
             }
             &:focus::-moz-range-thumb{
                 outline: none;
