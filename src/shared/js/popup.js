@@ -1,7 +1,74 @@
 // on document load
 document.addEventListener('DOMContentLoaded', async () => {
     let state;
-    let defaultState;
+    const isFirefox = typeof browser !== 'undefined';
+
+    async function loadSettings() {
+        return new Promise((resolve) => {
+            chrome.storage.local.get(null, resolve);
+        });
+    }
+    async function saveSettings(newSettings) {
+        return new Promise((resolve) => {
+            chrome.storage.local.set(newSettings, resolve);
+        });
+    }
+
+    // update ui, save state. should be called after every event for manual reactivity
+    const onChange = async () => {
+        updateUI();
+        await saveSettings(state);
+        chrome.runtime.sendMessage({ "netbeepSettingsChanged": state });
+    }
+
+
+    // update ui depending on state
+    const updateUI = () => {
+        ui.isEnabled.checkbox.checked = state.isEnabled;
+        ui.requestsSameOrigin.checkbox.checked = state.requestsSameOrigin;
+        ui.requestsCrossOrigin.checkbox.checked = state.requestsCrossOrigin;
+        ui.requestsTrackers.checkbox.checked = state.requestsTrackers;
+        ui.requestsMalware.checkbox.checked = state.requestsMalware;
+
+        ui.volume.range.value = state.volume;
+        ui.volume.el.style.setProperty('--value', state.volume);
+        let volumeClass = 'off';
+        if (state.volume > 0) {
+            volumeClass = 'half';
+        }
+        if (state.volume > 0.6) {
+            volumeClass = 'full';
+        }
+        ui.volume.el.setAttribute('data-volume-class', volumeClass);
+
+        if (state.isEnabled) {
+            ui.settingsGroupRequests.classList.remove('disabled');
+            ui.volume.el.classList.remove('disabled');
+        } else {
+            ui.settingsGroupRequests.classList.add('disabled');
+            ui.volume.el.classList.add('disabled');
+        }
+        setIcon(state.isEnabled);
+    }
+
+
+    const setIcon = (enabled) => {
+        const iconPath = enabled ? 'img/icon-enabled-128.png' : 'img/icon-disabled-128.png';
+        const iconDetails = { path: { "128": iconPath } };
+
+        if (isFirefox) {
+            browser.browserAction.setIcon(iconDetails);
+        } else {
+            chrome.action.setIcon(iconDetails);
+        }
+    };
+
+
+    const playDemoSound = (type) => {
+        chrome.runtime.sendMessage({"netbeepPlayDemoSound": type});
+    }
+
+
 
     let ui = {};
 
@@ -40,28 +107,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     ui.volume.range = ui.volume.el.querySelector('input[type="range"]');
 
 
-    const init = async () => {
 
-        // load state
-        state = await new Promise((resolve) => {
-            chrome.storage.local.get(null, resolve);
-        });
+    // init
+    // load state
+    state = await loadSettings();
 
-        // get defaultState from service-worker
-        defaultState = await new Promise((resolve) => {
-            chrome.runtime.sendMessage({netbeepGetDefaultSettings: true}, resolve);
-        });
+    updateUI();
 
-        // merge defaultState with state
-        state = {...defaultState, ...state};
-
-        updateUI();
-
-        setTimeout(function() {
-            ui.body.classList.add("initialized"); // enables animations
-        }, 200); // otherwise runs too fast and we see animations when popup opens
-    }
-    init();
+    setTimeout(function() {
+        ui.body.classList.add("initialized"); // enables animations
+    }, 200); // otherwise runs too fast and we see animations when popup opens
 
 
     // Events
@@ -135,59 +190,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     
 
-
-    // update ui, save state. should be called after every event for manual reactivity
-    const onChange = () => {
-        updateUI();
-        saveState();
-    }
-
-
-    // update ui depending on state
-    const updateUI = () => {
-        ui.isEnabled.checkbox.checked = state.isEnabled;
-        ui.requestsSameOrigin.checkbox.checked = state.requestsSameOrigin;
-        ui.requestsCrossOrigin.checkbox.checked = state.requestsCrossOrigin;
-        ui.requestsTrackers.checkbox.checked = state.requestsTrackers;
-        ui.requestsMalware.checkbox.checked = state.requestsMalware;
-
-        ui.volume.range.value = state.volume;
-        ui.volume.el.style.setProperty('--value', state.volume);
-        let volumeClass = 'off';
-        if (state.volume > 0) {
-            volumeClass = 'half';
-        }
-        if (state.volume > 0.6) {
-            volumeClass = 'full';
-        }
-        ui.volume.el.setAttribute('data-volume-class', volumeClass);
-
-
-
-        if (state.isEnabled) {
-            ui.settingsGroupRequests.classList.remove('disabled');
-            ui.volume.el.classList.remove('disabled');
-        } else {
-            ui.settingsGroupRequests.classList.add('disabled');
-            ui.volume.el.classList.add('disabled');
-        }
-        setIcon(state.isEnabled);
-    }
-
-    const saveState = () => {
-        chrome.storage.local.set(state, function () {
-            chrome.runtime.sendMessage({netbeepSettingsChanged: true});
-        });
-    }
-
-    const setIcon = (enabled) => {
-        const iconPath = enabled ? 'img/icon-enabled-128.png' : 'img/icon-disabled-128.png';
-        chrome.action.setIcon({path: {"128": iconPath}});
-    }
-
-    const playDemoSound = (type) => {
-        chrome.runtime.sendMessage({"netbeepPlayDemoSound": { "type": type, "settings" : state }});
-    }
 
 
 
