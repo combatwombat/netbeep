@@ -1,7 +1,9 @@
 # netbeep
 Chrome and Firefox extension to play sounds on network requests depending on content type and domain. Higher pitch for bigger files.
 
-[Install it from the Chrome Web Store](https://chromewebstore.google.com/detail/netbeep/hcgpboeddcgldkgimfmcnfloonkccfmi)
+[For Chrome](https://chromewebstore.google.com/detail/netbeep/hcgpboeddcgldkgimfmcnfloonkccfmi)  
+
+[For Firefox](https://addons.mozilla.org/de/firefox/addon/netbeep/)
 
 https://github.com/combatwombat/netbeep/assets/26400/2c47053e-acae-4f2d-b432-d2d2f72b0fb3
 
