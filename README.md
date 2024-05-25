@@ -3,7 +3,7 @@ Chrome and Firefox extension to play sounds on network requests depending on con
 
 [For Chrome](https://chromewebstore.google.com/detail/netbeep/hcgpboeddcgldkgimfmcnfloonkccfmi)  
 
-[For Firefox](https://addons.mozilla.org/de/firefox/addon/netbeep/)
+[For Firefox](https://addons.mozilla.org/firefox/addon/netbeep/)
 
 https://github.com/combatwombat/netbeep/assets/26400/2c47053e-acae-4f2d-b432-d2d2f72b0fb3
 

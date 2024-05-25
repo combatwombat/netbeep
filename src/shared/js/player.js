@@ -284,6 +284,8 @@ let Player = function() {
             return;
         }
 
+        // Math.min(1, Math.max(0, contentLength / 100000)) * 2000 + 200
+
         // normalize contentLength from 0 to 1. 0 = 0kb, 1 = 100kb and above
         let normalizedContentLength = Math.min(1, Math.max(0, request.contentLength / 100000));
 
